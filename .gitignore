@@ -12,7 +12,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
-
+*.mp4
 ### IntelliJ IDEA ###
 .idea
 *.iws

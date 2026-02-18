@@ -1,12 +1,60 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { sign } from 'node:crypto';
+import { Interface } from 'node:readline';
+import {ValidationError, form,FormField, EmailValidationError, FieldTree}from "@angular/forms/signals"
+import { Validators } from '@angular/forms';
+import { Console } from 'node:console';
+interface Formz{
+  name:string;
+  email:string;
+  surname:string;
+}
+
+class EmailError implements ValidationError.WithField{
+  fieldTree: FieldTree<unknown, string | number>;
+  kind: string="email";
+  message?: string | undefined;
+
+  constructor(message:string,tree:FieldTree<unknown, string | number>){
+    this.message = message;
+    this.fieldTree=tree;
+  }
+}
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet,FormField],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('signup');
+  protected readonly title = signal('Registration');
+  private formstruct = signal<Formz>({name:"",email:"",surname:""});
+
+  signUpData = form(this.formstruct);
+
+   submit():void{
+
+    
+    let uname =this.signUpData.name().value;
+    let usname =this.signUpData.surname().value;
+    let uemail =this.signUpData.email().value;
+    if (!this.checkEmail(uemail())){
+        console.log("BAD EMAIL")
+        this.signUpData.email().errors().push(new EmailError("invalid email",this.signUpData))
+         alert(`bad email |${uemail()}|`);
+        return
+    }
+    fetch("http://localhost:8080/adduser",{method:"POST",body:JSON.stringify({username:uname,lastname:usname,email:uemail})})
+
+     
+  }
+
+  checkEmail ( mail:string):boolean{
+
+    let email_pattern= /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return email_pattern.test(mail);
+  }
+  
 }
