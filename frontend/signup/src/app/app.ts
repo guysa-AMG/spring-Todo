@@ -1,5 +1,6 @@
 import { Component, computed, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {} from "@angular/common";
 import { sign } from 'node:crypto';
 import { Interface } from 'node:readline';
 import {ValidationError, form,FormField, EmailValidationError, FieldTree}from "@angular/forms/signals"
@@ -30,13 +31,14 @@ class EmailError implements ValidationError.WithField{
 })
 export class App {
   protected readonly title = signal('Registration');
+  protected loading = signal<boolean>(false);
   private formstruct = signal<Formz>({name:"",email:"",surname:""});
 
   signUpData = form(this.formstruct);
 
    submit():void{
 
-    
+
     let uname =this.signUpData.name().value;
     let usname =this.signUpData.surname().value;
     let uemail =this.signUpData.email().value;
@@ -46,9 +48,19 @@ export class App {
          alert(`bad email |${uemail()}|`);
         return
     }
-    fetch("http://localhost:8080/adduser",{method:"POST",body:JSON.stringify({username:uname,lastname:usname,email:uemail})})
+    this.loading.set(true);
+     fetch("http://localhost:8080/adduser",
+      {
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body:JSON.stringify(
+                    {username:uname,
+                      lastname:usname,
+                      email:uemail})}).then((value)=>{this.loading.set(false);})
 
-     
+
   }
 
   checkEmail ( mail:string):boolean{
@@ -56,5 +68,5 @@ export class App {
     let email_pattern= /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return email_pattern.test(mail);
   }
-  
+
 }

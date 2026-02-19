@@ -1,18 +1,22 @@
-    
- 
+
+
 
 <section>
-  
-   <h1 class="text-5xl pb-5 text-center">{{title()}}</h1>
+
+    @if(this.loading()){
+    <div class="loading"><span class="animate-bounce">1 sec</span></div>
+  }
+
+   <h1 class="text-5xl pb-5 text-center uppercase animate-pulse">{{title()}}</h1>
   <div>
-   
+
     <input class="mb-9"  placeholder="name" [formField]="signUpData.name"/>
      <input class="mb-9"  placeholder="surname" [formField]="signUpData.surname"/>
-    
-    <input class="mb-9"  type="email" placeholder="email"  
+
+    <input class="mb-9"  type="email" placeholder="email"
     error="faild" [formField]="signUpData.email"/>
-    
-    <button  (click)="this.submit()">submit</button>
+
+    <button class="uppercase"  (click)="this.submit()">submit</button>
   </div>
 </section>
 <video src="/bgvid.mp4" autoplay="true" loop></video>

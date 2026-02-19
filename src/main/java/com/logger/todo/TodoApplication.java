@@ -17,8 +17,8 @@ public class TodoApplication {
 	@GetMapping("/")
 	public String index(){
 		
-		System.out.println("Go Now");
-		return "all up";};
+
+		return "Hi Welcome";};
 
 	
 
