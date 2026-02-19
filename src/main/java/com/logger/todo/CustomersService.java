@@ -6,15 +6,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomersService {
-    CustomersRepository customerRepo;    
+    protected CustomersRepository customerRepo;
 
     public CustomersService(CustomersRepository customersRepository){
         this.customerRepo= customersRepository;
     }
+
     public List<Customers> getAll (){
         return customerRepo.findAll();
     }
+
+
     public void add_Customer(Customers user){
         this.customerRepo.save(user);
     }
+
+    public void removeCustomerById(int id){
+        this.customerRepo.removeById(id);
+    }
+    public int getCount(){
+        return Math.toIntExact(this.customerRepo.count());
+    }
+
 }

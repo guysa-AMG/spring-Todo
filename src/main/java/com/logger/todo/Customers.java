@@ -27,21 +27,8 @@ private Timestamp created_at;
 private Timestamp last_seen;
 
 
-public Customers(){};
 
-public Customers(String given_name,String given_surname,String given_email){
-    this.name=given_name;
-    this.email=given_email;
-    this.surname = given_surname;
 
-}
-static Customers from(LinkedHashMap<String,String> obj){
-    return new Customers(
-            "name",
-            "surname",
-            "email"
-            );
-}
 
 public void setId(int id){
     this.id=id;

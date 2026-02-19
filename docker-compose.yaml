@@ -48,7 +48,7 @@ services:
     depends_on:
       - spring_application
     ports:
-      - 4200:4200
+      - 80:4200
     networks:
       - lan
 
