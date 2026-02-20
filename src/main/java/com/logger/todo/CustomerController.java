@@ -1,5 +1,8 @@
 package com.logger.todo;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -26,9 +29,16 @@ public class CustomerController {
         this.cs.add_Customer(request);
         return true;
     };
-    @GetMapping("/db-count")
-    public int getCount(){
-        return this.cs.getCount();
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Void> remove(@PathVariable int id){
+        boolean successful =this.cs.removeCustomerById(id);
+        if (successful){
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+    
+
     
 }

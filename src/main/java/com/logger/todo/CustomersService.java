@@ -21,8 +21,9 @@ public class CustomersService {
         this.customerRepo.save(user);
     }
 
-    public void removeCustomerById(int id){
+    public boolean removeCustomerById(int id){
         this.customerRepo.removeById(id);
+        return true;
     }
     public int getCount(){
         return Math.toIntExact(this.customerRepo.count());
